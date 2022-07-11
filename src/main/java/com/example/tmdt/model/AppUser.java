@@ -1,43 +1,70 @@
 package com.example.tmdt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String username;
-    String email;
-    String sex;
-    String address;
-    LocalDateTime birthday;
-    String avatar;
-    String password;
-@ManyToOne
-Role role;
+    private Long id;
+    @Size(min = 3, max = 50)
+    private String name;
+    @Size(min = 3, max = 50)
+    private String username;
+    @Size(max = 50)
+    @Email
+    private String email;
+    @JsonIgnore
+    @Size(min = 6, max = 100)
+    private String password;
+    @Lob
+    private String avatar;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
+    Set<Role> roles = new HashSet<>();
+
     public AppUser() {
     }
 
-    public AppUser(Long id, String username, String email, String sex, String address, LocalDateTime birthday, String avatar, String password, Role role) {
+    public AppUser(Long id, String name, String username, String email, String password, String avatar, Set<Role> roles) {
         this.id = id;
+        this.name = name;
         this.username = username;
         this.email = email;
-        this.sex = sex;
-        this.address = address;
-        this.birthday = birthday;
-        this.avatar = avatar;
         this.password = password;
-        this.role = role;
+        this.avatar = avatar;
+        this.roles = roles;
     }
 
+    public AppUser( String name, String username, String email, String avatar, String encode
+    ) {
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.avatar = avatar;
+        this.password = encode;
+    }
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -56,28 +83,12 @@ Role role;
         this.email = email;
     }
 
-    public String getSex() {
-        return sex;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public LocalDateTime getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(LocalDateTime birthday) {
-        this.birthday = birthday;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getAvatar() {
@@ -88,19 +99,11 @@ Role role;
         this.avatar = avatar;
     }
 
-    public String getPassword() {
-        return password;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

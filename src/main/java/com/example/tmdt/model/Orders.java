@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Order {
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -13,10 +13,10 @@ public class Order {
     @ManyToOne
     AppUser appUser;
 
-    public Order() {
+    public Orders() {
     }
 
-    public Order(Long id, String name, LocalDateTime orderTime, AppUser appUser) {
+    public Orders(Long id, String name, LocalDateTime orderTime, AppUser appUser) {
         this.id = id;
         this.name = name;
         this.orderTime = orderTime;

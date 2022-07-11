@@ -1,21 +1,24 @@
 package com.example.tmdt.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.hibernate.annotations.NaturalId;
+
+import javax.persistence.*;
 
 @Entity
+@Table(name = "roles")
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String name;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Enumerated(EnumType.STRING)
+    @NaturalId
+    @Column(length = 60)
+    private RoleName name;
 
     public Role() {
     }
 
-    public Role(Long id, String name) {
+    public Role(Long id, RoleName name) {
         this.id = id;
         this.name = name;
     }
@@ -28,11 +31,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
+    public RoleName getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(RoleName name) {
         this.name = name;
     }
 }
